@@ -12,11 +12,13 @@ The app talks to an in-memory mock API with simulated network latency, so no bac
 
 > To check how the error state looks, open the app with `?simulateError=true` in the URL (for example `http://localhost:4200/?simulateError=true`).
 
-## Your task
+## Start here
 
-Read the GitHub issue for this exercise: **[FE-124 — Refactor Issue Management Feature](https://github.com/NChapron-sic/frontend-architecture-challenge/issues/1)**.
+👉 **[Read the challenge brief](https://nchapron-sic.github.io/frontend-architecture-challenge/challenge/)**. It explains the task, how the session works and what we look at.
 
-Plan for **45–60 minutes**. We're not looking for a complete rewrite. We want to see your reasoning, your priorities, and how you communicate them.
+You can also reach it from the **Challenge brief** link in the app's top bar, or at <http://localhost:4200/challenge/> when the app runs locally.
+
+The ticket for this exercise is **[FE-124 — Refactor Issue Management Feature](https://github.com/NChapron-sic/frontend-architecture-challenge/issues/1)** (copy in [`recruitment/ISSUE.md`](recruitment/ISSUE.md)).
 
 ## Prerequisites
 
@@ -48,6 +50,8 @@ Then open <http://localhost:4200>.
 ## Project overview
 
 ```text
+public/
+└── challenge/      Challenge brief (static page, served at /challenge/)
 src/
 ├── app/            Application source code
 ├── _tokens.scss    Design tokens (colours, spacing, typography)
@@ -60,22 +64,3 @@ src/
 The test suite checks behaviour through the rendered page: it finds elements by their accessible labels and `data-testid` attributes, and stubs the HTTP calls (`GET /api/issues`, `PATCH /api/issues/:id`). It shouldn't need major changes when the internal structure changes.
 
 A CI workflow runs lint, tests and the build on every pull request.
-
-## Candidate workflow
-
-1. **Read the GitHub issue.** Make sure you understand the context and the acceptance criteria.
-2. **Clone or fork the repository.**
-3. **Create a feature branch**, for example `feature/FE-124-refactor-issue-management`.
-4. **Inspect the existing implementation.** Run the app and the tests, and read the code.
-5. **Prepare a short architectural plan before coding.** A few bullet points in the PR description or a comment on the issue is enough. Describe what you intend to change, in what order, and what you will deliberately leave out.
-6. **Implement the refactoring.** Commit in small, meaningful steps.
-7. **Run the tests and review your changes.** `npm test`, `npm run lint` and `npm run build` should all pass. Re-read your diff as a reviewer would.
-8. **Prepare a pull request.** Fill in the PR template. It asks about your decisions, trade-offs, validation and AI usage.
-
-## Submission
-
-- Push your feature branch to your fork, or to the repository you were given access to.
-- Open a pull request against `main` using the provided template.
-- Send us the pull request link.
-
-You may use AI coding assistants. You remain responsible for the result and should be ready to explain and defend every change in the follow-up discussion.

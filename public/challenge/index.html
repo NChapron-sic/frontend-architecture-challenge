@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Challenge brief — Operations Console</title>
+    <meta
+      name="description"
+      content="Frontend architecture challenge: task, expectations and how the session works."
+    />
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+    <style>
+      :root {
+        --primary-50: #eef4ff;
+        --primary-500: #3366e6;
+        --primary-600: #2453c9;
+        --primary-700: #1c43a3;
+        --n-0: #ffffff;
+        --n-50: #f7f8fa;
+        --n-100: #eef0f4;
+        --n-200: #dfe3ea;
+        --n-300: #c6ccd7;
+        --n-600: #525a6b;
+        --n-700: #3b4252;
+        --n-900: #151a26;
+        --success-50: #ecfdf3;
+        --success-200: #abefc6;
+        --success-700: #067647;
+        --warning-50: #fffaeb;
+        --warning-200: #fedf89;
+        --warning-700: #93370d;
+        --font:
+          'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        --radius: 12px;
+        --shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--n-900);
+        background: var(--n-50);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3,
+      p,
+      ul,
+      ol {
+        margin: 0;
+      }
+
+      a {
+        color: var(--primary-700);
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--primary-500);
+        outline-offset: 2px;
+      }
+
+      code {
+        padding: 1px 6px;
+        border-radius: 4px;
+        background: var(--n-100);
+        font-family: var(--mono);
+        font-size: 0.85em;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 1rem;
+        top: -100px;
+        z-index: 10;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        background: var(--n-0);
+        font-weight: 600;
+      }
+
+      .skip-link:focus {
+        top: 0.5rem;
+      }
+
+      /* Top bar */
+      .topbar {
+        background: var(--n-900);
+        color: var(--n-0);
+      }
+
+      .topbar__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        max-width: 960px;
+        height: 56px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: inherit;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .brand__logo {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--primary-500);
+      }
+
+      .topbar__link {
+        color: var(--n-300);
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .topbar__link:hover {
+        color: var(--n-0);
+      }
+
+      /* Layout */
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+
+      .hero {
+        margin-bottom: 2rem;
+      }
+
+      .eyebrow {
+        margin-bottom: 0.25rem;
+        color: var(--primary-600);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .hero h1 {
+        font-size: clamp(1.6rem, 4vw, 2.1rem);
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+      }
+
+      .hero__lead {
+        max-width: 65ch;
+        margin-top: 0.75rem;
+        color: var(--n-600);
+        font-size: 1.075rem;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 40px;
+        padding: 0 1rem;
+        border: 1px solid var(--n-300);
+        border-radius: 8px;
+        background: var(--n-0);
+        color: var(--n-700);
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .btn:hover {
+        border-color: var(--n-600);
+      }
+
+      .btn--primary {
+        border-color: var(--primary-600);
+        background: var(--primary-600);
+        color: var(--n-0);
+      }
+
+      .btn--primary:hover {
+        background: var(--primary-700);
+      }
+
+      .card {
+        margin-bottom: 1.25rem;
+        padding: 1.5rem;
+        border: 1px solid var(--n-200);
+        border-radius: var(--radius);
+        background: var(--n-0);
+        box-shadow: var(--shadow);
+      }
+
+      .card h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.75rem;
+        font-size: 1.2rem;
+        letter-spacing: -0.01em;
+      }
+
+      .card h3 {
+        margin: 1.25rem 0 0.4rem;
+        font-size: 1rem;
+      }
+
+      .card p + p,
+      .card p + ul,
+      .card ul + p {
+        margin-top: 0.75rem;
+      }
+
+      .card ul,
+      .card ol {
+        padding-left: 1.25rem;
+      }
+
+      .card li + li {
+        margin-top: 0.4rem;
+      }
+
+      .num {
+        display: inline-grid;
+        place-items: center;
+        flex: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--primary-50);
+        color: var(--primary-700);
+        font-size: 0.85rem;
+      }
+
+      .callout {
+        margin-bottom: 1.25rem;
+        padding: 1.25rem 1.5rem;
+        border: 1px solid var(--success-200);
+        border-radius: var(--radius);
+        background: var(--success-50);
+        color: var(--n-900);
+      }
+
+      .callout strong {
+        color: var(--success-700);
+      }
+
+      .callout ul {
+        margin-top: 0.5rem;
+        padding-left: 1.25rem;
+      }
+
+      .note {
+        margin-top: 1rem;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--warning-200);
+        border-radius: 8px;
+        background: var(--warning-50);
+        color: var(--warning-700);
+        font-size: 0.9rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+
+      .tile {
+        padding: 1rem;
+        border: 1px solid var(--n-200);
+        border-radius: 8px;
+        background: var(--n-50);
+      }
+
+      .tile h3 {
+        margin: 0 0 0.25rem;
+        font-size: 0.95rem;
+      }
+
+      .tile p {
+        color: var(--n-600);
+        font-size: 0.9rem;
+      }
+
+      .steps {
+        counter-reset: step;
+        list-style: none;
+        padding-left: 0 !important;
+      }
+
+      .steps > li {
+        position: relative;
+        padding-left: 2.5rem;
+      }
+
+      .steps > li + li {
+        margin-top: 1rem !important;
+      }
+
+      .steps > li::before {
+        counter-increment: step;
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--n-100);
+        color: var(--n-700);
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .steps .muted {
+        display: block;
+        color: var(--n-600);
+        font-size: 0.9rem;
+      }
+
+      pre {
+        margin: 0.5rem 0 0;
+        padding: 0.75rem 1rem;
+        overflow-x: auto;
+        border-radius: 8px;
+        background: var(--n-900);
+        color: var(--n-100);
+        font-family: var(--mono);
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+
+      pre code {
+        padding: 0;
+        background: none;
+        color: inherit;
+        font-size: inherit;
+      }
+
+      details {
+        border-bottom: 1px solid var(--n-100);
+      }
+
+      details:last-of-type {
+        border-bottom: 0;
+      }
+
+      summary {
+        padding: 0.85rem 0;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      details > div {
+        padding: 0 0 1rem;
+        color: var(--n-700);
+      }
+
+      footer {
+        margin-top: 2rem;
+        color: var(--n-600);
+        font-size: 0.875rem;
+        text-align: center;
+      }
+
+      @media (max-width: 640px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card {
+          padding: 1.25rem;
+        }
+
+        .topbar__inner,
+        main {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
+        .brand__name {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="topbar">
+      <div class="topbar__inner">
+        <a class="brand" href="../">
+          <span class="brand__logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+              <path
+                d="M4 13h4l2-6 4 12 2-6h4"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span class="brand__name">Operations Console</span>
+        </a>
+        <a class="topbar__link" href="../">Open the application →</a>
+      </div>
+    </header>
+
+    <main id="content">
+      <section class="hero" aria-labelledby="title">
+        <p class="eyebrow">Frontend engineering challenge</p>
+        <h1 id="title">Refactor the Issue Management feature</h1>
+        <p class="hero__lead">
+          Welcome! This page explains the task, how the session works and what we pay attention to.
+          Take a few minutes to read it before you start. If anything is unclear, ask us.
+        </p>
+        <div class="actions">
+          <a
+            class="btn btn--primary"
+            href="https://github.com/NChapron-sic/frontend-architecture-challenge/issues/1"
+            >Read the ticket (FE-124)</a
+          >
+          <a class="btn" href="https://github.com/NChapron-sic/frontend-architecture-challenge"
+            >Repository</a
+          >
+          <a class="btn" href="../">Open the application</a>
+        </div>
+      </section>
+
+      <div class="callout" role="note">
+        <p>
+          <strong>Treat this as a normal working session, not an exam.</strong>
+          Imagine it's your first week on the team and you've picked up this ticket.
+        </p>
+        <ul>
+          <li>You are <strong>not</strong> expected to finish the ticket or merge a perfect PR.</li>
+          <li>Get as far as you reasonably can. A clear, partial result is fine.</li>
+          <li>
+            We care much more about <strong>how you think and how you work</strong> than about how
+            much code you write.
+          </li>
+        </ul>
+      </div>
+
+      <section class="card" aria-labelledby="task">
+        <h2 id="task"><span class="num" aria-hidden="true">1</span>Your task</h2>
+        <p>
+          <strong>Operations Console</strong> is an internal tool used to monitor operational
+          issues. Its Issue Management screen lets users filter and search issues, change their
+          status, and see summary counters.
+        </p>
+        <p>
+          The feature works, but it was built quickly and has become hard to maintain. The team
+          plans to add more features and to reuse some UI elements in other applications.
+          <strong
+            >Your goal is to improve the maintainability of this feature without changing its
+            behaviour.</strong
+          >
+        </p>
+        <p>
+          The full context, expected outcome and acceptance criteria are in the ticket:
+          <a href="https://github.com/NChapron-sic/frontend-architecture-challenge/issues/1"
+            >FE-124 — Refactor Issue Management Feature</a
+          >.
+        </p>
+      </section>
+
+      <section class="card" aria-labelledby="session">
+        <h2 id="session"><span class="num" aria-hidden="true">2</span>How the session works</h2>
+        <div class="grid">
+          <div class="tile">
+            <h3><span aria-hidden="true">⏱</span> About 45–60 minutes</h3>
+            <p>
+              Prioritise. Decide what matters most and focus on it. Say what you would do next with
+              more time.
+            </p>
+          </div>
+          <div class="tile">
+            <h3><span aria-hidden="true">💻</span> Ready-to-use environment</h3>
+            <p>
+              We give you a GitHub Codespace with everything installed. You can also work locally if
+              you prefer.
+            </p>
+          </div>
+          <div class="tile">
+            <h3><span aria-hidden="true">💬</span> We're your teammates</h3>
+            <p>
+              Ask as many questions as you like: about the product, the code or the expectations.
+              Asking for help when you're stuck is a good thing.
+            </p>
+          </div>
+          <div class="tile">
+            <h3><span aria-hidden="true">🔎</span> Use your usual tools</h3>
+            <p>
+              Google, documentation and AI assistants are all allowed, just like on a normal working
+              day.
+            </p>
+          </div>
+        </div>
+        <p class="note">
+          Please <strong>think out loud</strong>. Explaining what you're looking at, what you're
+          unsure about and why you pick one option over another helps us much more than silent
+          typing.
+        </p>
+      </section>
+
+      <section class="card" aria-labelledby="workflow">
+        <h2 id="workflow"><span class="num" aria-hidden="true">3</span>Suggested workflow</h2>
+        <ol class="steps">
+          <li><strong>Read the ticket</strong> and ask about anything unclear.</li>
+          <li>
+            <strong>Run the application and the tests</strong> to see how the feature behaves.
+            <pre><code>npm ci        # already done in the Codespace
+npm start     # http://localhost:4200
+npm test</code></pre>
+            <span class="muted"
+              >Tip: open the app with <code>?simulateError=true</code> in the URL to see the error
+              state.</span
+            >
+          </li>
+          <li>
+            <strong>Explore the code</strong> and the project's conventions (<code>README.md</code>,
+            <code>AGENTS.md</code>).
+          </li>
+          <li>
+            <strong>Create a feature branch.</strong>
+            <pre><code>git checkout -b feature/FE-124-refactor-issue-management</code></pre>
+          </li>
+          <li>
+            <strong>Share a short plan before coding.</strong>
+            <span class="muted"
+              >A few bullet points are enough: what you'll change, in what order, and what you'll
+              deliberately leave out. Say it out loud, or write it in the PR description.</span
+            >
+          </li>
+          <li>
+            <strong>Implement in small, meaningful commits.</strong>
+          </li>
+          <li>
+            <strong>Validate your changes.</strong>
+            <pre><code>npm test
+npm run lint
+npm run build</code></pre>
+          </li>
+          <li>
+            <strong>Open a pull request</strong> against <code>main</code>.
+            <span class="muted"
+              >The PR template is filled in automatically. It asks about your decisions, trade-offs,
+              validation and AI usage. Short answers are fine.</span
+            >
+          </li>
+        </ol>
+      </section>
+
+      <section class="card" aria-labelledby="look">
+        <h2 id="look"><span class="num" aria-hidden="true">4</span>What we look at</h2>
+        <p>There is no single expected solution. We pay attention to:</p>
+        <div class="grid">
+          <div class="tile">
+            <h3>Understanding</h3>
+            <p>How you read existing code and identify what makes it hard to maintain.</p>
+          </div>
+          <div class="tile">
+            <h3>Prioritisation</h3>
+            <p>How you break the problem down and choose what to do first in limited time.</p>
+          </div>
+          <div class="tile">
+            <h3>Architectural reasoning</h3>
+            <p>The choices you make, the alternatives you considered and the trade-offs.</p>
+          </div>
+          <div class="tile">
+            <h3>Communication</h3>
+            <p>The questions you ask, how you explain your plan, and the clarity of your PR.</p>
+          </div>
+          <div class="tile">
+            <h3>Validation</h3>
+            <p>How you make sure existing behaviour still works.</p>
+          </div>
+          <div class="tile">
+            <h3>Critical use of tools</h3>
+            <p>
+              How you use AI and other resources: what you accept, what you question, what you
+              reject.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="faq">
+        <h2 id="faq"><span class="num" aria-hidden="true">5</span>Rules &amp; FAQ</h2>
+
+        <details>
+          <summary>What if I run out of time?</summary>
+          <div>
+            That's expected. Commit what you have, push it, and open the pull request anyway. In the
+            description, list what you would do next and why. An unfinished PR with clear next steps
+            is a perfectly good outcome.
+          </div>
+        </details>
+
+        <details>
+          <summary>Can I use AI assistants?</summary>
+          <div>
+            Yes. You stay responsible for the result. Be ready to explain any change, and tell us
+            when you disagreed with a suggestion or changed it.
+          </div>
+        </details>
+
+        <details>
+          <summary>Can I add libraries?</summary>
+          <div>
+            Yes, if you think it's justified. Explain why in the pull request. Keep in mind that
+            every dependency has a cost.
+          </div>
+        </details>
+
+        <details>
+          <summary>Can I change the existing tests?</summary>
+          <div>
+            The existing tests check the feature's behaviour and should keep passing. You can add
+            tests. If you think a test needs to change, explain why.
+          </div>
+        </details>
+
+        <details>
+          <summary>Do I have to follow <code>AGENTS.md</code>?</summary>
+          <div>
+            It describes the team's existing conventions. Treat it like any other guidance in a real
+            project and use your judgement. Whatever you decide, tell us your reasoning.
+          </div>
+        </details>
+
+        <details>
+          <summary>Can I change how the application looks or behaves?</summary>
+          <div>
+            The goal is a refactoring: what users see and can do should stay the same. If you notice
+            a bug or an improvement, mention it rather than mixing it into this change.
+          </div>
+        </details>
+
+        <details>
+          <summary>Where should my plan go?</summary>
+          <div>
+            Wherever is natural for you: said out loud, in the PR description, or as a comment on
+            the ticket.
+          </div>
+        </details>
+
+        <details>
+          <summary>Something is unclear or not working.</summary>
+          <div>Ask us straight away. That's exactly what we would expect from a teammate.</div>
+        </details>
+      </section>
+
+      <section class="card" aria-labelledby="submit">
+        <h2 id="submit"><span class="num" aria-hidden="true">6</span>At the end</h2>
+        <ul>
+          <li>Push your branch and open a pull request against <code>main</code>.</li>
+          <li>Fill in the PR template, even briefly.</li>
+          <li>
+            We'll go through it together: your decisions, trade-offs, and what you would do next.
+          </li>
+        </ul>
+      </section>
+
+      <footer>Good luck, and enjoy the exercise!</footer>
+    </main>
+  </body>
+</html>
