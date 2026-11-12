@@ -1,0 +1,37 @@
+{
+  "name": "Operations Console",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "hostRequirements": {
+    "cpus": 2
+  },
+  "containerEnv": {
+    "NG_CLI_ANALYTICS": "false"
+  },
+  "postCreateCommand": "npm ci",
+  "forwardPorts": [4200],
+  "portsAttributes": {
+    "4200": {
+      "label": "Operations Console",
+      "onAutoForward": "notify"
+    }
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md"]
+    },
+    "vscode": {
+      "extensions": [
+        "angular.ng-template",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "vitest.explorer"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "eslint.validate": ["typescript", "html"],
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
+    }
+  }
+}

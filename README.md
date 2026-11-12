@@ -14,19 +14,31 @@ The app talks to an in-memory mock API with simulated network latency, so no bac
 
 ## Start here
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/NChapron-sic/frontend-architecture-challenge?quickstart=1)
+
 👉 **[Read the challenge brief](https://nchapron-sic.github.io/frontend-architecture-challenge/challenge/)**. It explains the task, how the session works and what we look at.
 
 You can also reach it from the **Challenge brief** link in the app's top bar, or at <http://localhost:4200/challenge/> when the app runs locally.
 
 The ticket for this exercise is **[FE-124 — Refactor Issue Management Feature](https://github.com/NChapron-sic/frontend-architecture-challenge/issues/1)** (copy in [`recruitment/ISSUE.md`](recruitment/ISSUE.md)).
 
-## Prerequisites
-
-- Node.js **20.19+** or **22.12+** (an `.nvmrc` is provided: `nvm use`)
-- npm **10+**
-- Git
-
 ## Getting started
+
+### In GitHub Codespaces (recommended)
+
+Click **Open in GitHub Codespaces** above, or go to **Code → Codespaces → Create codespace on main**. Dependencies are installed automatically. Then run:
+
+```bash
+npm start
+```
+
+When port 4200 is forwarded, click **Open in Browser** in the notification (or open it from the **Ports** tab).
+
+The Codespace runs on your own GitHub account. Your first `git push` will ask you to create a fork; accept it, then open your pull request from the fork to this repository's `main` branch.
+
+### Locally
+
+Requires Node.js **20.19+** or **22.12+** (an `.nvmrc` is provided: `nvm use`), npm **10+** and Git.
 
 ```bash
 npm ci
@@ -37,15 +49,15 @@ Then open <http://localhost:4200>.
 
 ## Commands
 
-| Command                | Description                                     |
-| ---------------------- | ----------------------------------------------- |
-| `npm start`            | Start the development server on port 4200       |
-| `npm test`             | Run the unit test suite once (Vitest)           |
-| `npm run test:watch`   | Run the tests in watch mode                     |
-| `npm run build`        | Create a production build in `dist/`            |
-| `npm run lint`         | Lint TypeScript and templates (ESLint)          |
-| `npm run format`       | Format source files (Prettier)                  |
-| `npm run format:check` | Check formatting without modifying files        |
+| Command                | Description                               |
+| ---------------------- | ----------------------------------------- |
+| `npm start`            | Start the development server on port 4200 |
+| `npm test`             | Run the unit test suite once (Vitest)     |
+| `npm run test:watch`   | Run the tests in watch mode               |
+| `npm run build`        | Create a production build in `dist/`      |
+| `npm run lint`         | Lint TypeScript and templates (ESLint)    |
+| `npm run format`       | Format source files (Prettier)            |
+| `npm run format:check` | Check formatting without modifying files  |
 
 ## Project overview
 
